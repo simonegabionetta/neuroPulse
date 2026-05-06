@@ -8,8 +8,7 @@ Landing page MVP para apresentacao do NeuroPulse, um SaaS B2B de saude mental co
 - Hero com video em tela cheia usando `frontend/public/hero-video.mp4`.
 - Formulario de captura de leads.
 - Backend Express local na porta `4000`.
-- Banco local simples em JSON: `backend/data/leads.json`.
-- Sem dependencia obrigatoria de Supabase, PostgreSQL ou servico externo.
+- Banco Supabase/PostgreSQL para armazenar os leads.
 
 ## Como rodar
 
@@ -33,10 +32,10 @@ Health check:
 http://localhost:4000/health
 ```
 
-Os leads enviados pelo formulario ficam em:
+Antes de enviar leads, crie a tabela no Supabase rodando o arquivo:
 
 ```txt
-backend/data/leads.json
+schema.sql
 ```
 
 ### 2. Frontend
@@ -61,14 +60,16 @@ Crie `frontend/.env.local` com:
 NEXT_PUBLIC_API_URL=http://localhost:4000
 ```
 
-Para o backend, `backend/.env` e opcional para MVP local:
+Para o backend, crie `backend/.env` com:
 
 ```env
 PORT=4000
 NODE_ENV=development
 FRONTEND_URL=http://localhost:3000
+SUPABASE_URL=sua_url_do_supabase
+SUPABASE_SERVICE_ROLE_KEY=sua_service_role_key
 ```
 
 ## Decisao sobre banco
 
-Para este MVP, o banco local em JSON e suficiente porque o objetivo e apresentar a landing e demonstrar o fluxo de captura. Se o projeto avancar para uso real, a troca para Supabase, PostgreSQL ou outro banco pode ser feita depois sem mudar a interface da landing.
+O backend usa a chave `service_role` do Supabase para inserir leads com seguranca. Essa chave deve ficar apenas no backend e nunca deve ser exposta no frontend.

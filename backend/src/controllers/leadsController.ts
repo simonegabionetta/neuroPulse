@@ -1,11 +1,8 @@
-import { randomUUID } from "crypto";
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { getSupabaseClient } from "../lib/supabase";
 
 interface Lead {
-  id: string;
   nome: string;
   email: string;
   empresa: string;
@@ -14,11 +11,7 @@ interface Lead {
   mensagem: string | null;
   origem: string;
   ip_hash: string;
-  created_at: string;
 }
-
-const dataDir = path.resolve(process.cwd(), "data");
-const leadsFile = path.join(dataDir, "leads.json");
 
 export async function createLead(req: Request, res: Response): Promise<void> {
   const errors = validationResult(req);
@@ -35,19 +28,7 @@ export async function createLead(req: Request, res: Response): Promise<void> {
   const normalizedEmail = email.toLowerCase().trim();
 
   try {
-    const leads = await readLeads();
-    const emailExists = leads.some((lead) => lead.email === normalizedEmail);
-
-    if (emailExists) {
-      res.status(409).json({
-        success: false,
-        errors: [{ msg: "Este email ja esta cadastrado." }],
-      });
-      return;
-    }
-
     const lead: Lead = {
-      id: randomUUID(),
       nome: nome.trim(),
       email: normalizedEmail,
       empresa: empresa.trim(),
@@ -56,45 +37,44 @@ export async function createLead(req: Request, res: Response): Promise<void> {
       mensagem: mensagem?.trim() || null,
       origem: req.headers.referer || "direct",
       ip_hash: hashIP(req.ip || "unknown"),
-      created_at: new Date().toISOString(),
     };
 
-    leads.push(lead);
-    await saveLeads(leads);
+    const supabase = getSupabaseClient();
+    const { data, error } = await supabase
+      .from("leads")
+      .insert(lead)
+      .select("id")
+      .single();
+
+    if (error) {
+      if (error.code === "23505") {
+        res.status(409).json({
+          success: false,
+          errors: [{ msg: "Este email ja esta cadastrado." }],
+        });
+        return;
+      }
+
+      console.error("Erro ao salvar lead no Supabase:", error);
+      res.status(500).json({
+        success: false,
+        errors: [{ msg: "Erro interno ao salvar lead." }],
+      });
+      return;
+    }
 
     res.status(201).json({
       success: true,
-      data: { id: lead.id },
+      data: { id: data.id },
       message: "Lead criado com sucesso!",
     });
   } catch (error) {
-    console.error("Erro ao salvar lead local:", error);
+    console.error("Erro ao salvar lead:", error);
     res.status(500).json({
       success: false,
       errors: [{ msg: "Erro interno ao salvar lead." }],
     });
   }
-}
-
-async function readLeads(): Promise<Lead[]> {
-  try {
-    const file = await readFile(leadsFile, "utf8");
-    return JSON.parse(file) as Lead[];
-  } catch (error) {
-    const code = (error as NodeJS.ErrnoException).code;
-
-    if (code === "ENOENT") {
-      await saveLeads([]);
-      return [];
-    }
-
-    throw error;
-  }
-}
-
-async function saveLeads(leads: Lead[]): Promise<void> {
-  await mkdir(dataDir, { recursive: true });
-  await writeFile(leadsFile, `${JSON.stringify(leads, null, 2)}\n`, "utf8");
 }
 
 function hashIP(ip: string): string {
