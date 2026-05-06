@@ -54,13 +54,7 @@ http://localhost:3000
 
 ## Variaveis de ambiente
 
-Crie `frontend/.env.local` com:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:4000
-```
-
-Para o backend, crie `backend/.env` com:
+Crie `backend/.env` a partir de `backend/.env.example`:
 
 ```env
 PORT=4000
@@ -68,6 +62,14 @@ NODE_ENV=development
 FRONTEND_URL=http://localhost:3000
 SUPABASE_URL=sua_url_do_supabase
 SUPABASE_SERVICE_ROLE_KEY=sua_service_role_key
+```
+
+Crie `frontend/.env.local` a partir de `frontend/.env.example`:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000
+NEXT_PUBLIC_SITE_URL=https://neuropulse.com.br
+NEXT_PUBLIC_GA_ID=G-SEU_ID_DO_GOOGLE_ANALYTICS
 ```
 
 ## Decisao sobre banco

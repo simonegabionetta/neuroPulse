@@ -1,24 +1,41 @@
 import type { Metadata } from "next";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://neuropulse.com.br";
+const siteName = "NeuroPulse";
+const title = "NeuroPulse | Saude mental corporativa preventiva";
+const description =
+  "Plataforma de saude mental corporativa para identificar sinais de burnout antes que virem afastamentos.";
+
 export const metadata: Metadata = {
-  title: "NeuroPulse | Saúde mental corporativa preventiva",
-  description:
-    "Plataforma de saúde mental corporativa para identificar sinais de risco antes que virem afastamentos.",
+  metadataBase: new URL(siteUrl),
+  applicationName: siteName,
+  title,
+  description,
   keywords: [
-    "saúde mental corporativa",
+    "saude mental corporativa",
     "burnout",
     "bem-estar no trabalho",
+    "bem-estar corporativo",
+    "prevencao de burnout",
+    "absenteismo",
+    "people analytics",
     "RH",
     "NeuroPulse",
   ],
-  authors: [{ name: "NeuroPulse" }],
+  authors: [{ name: siteName }],
+  creator: siteName,
+  publisher: siteName,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "NeuroPulse | Saúde mental corporativa preventiva",
+    title,
     description:
-      "Acompanhe sinais de bem-estar e risco emocional com dados agregados, anônimos e acionáveis.",
-    url: "https://neuropulse.local",
-    siteName: "NeuroPulse",
+      "Acompanhe sinais de bem-estar e risco emocional com dados agregados, anonimos e acionaveis.",
+    url: "/",
+    siteName,
     locale: "pt_BR",
     type: "website",
     images: [
@@ -32,13 +49,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NeuroPulse | Saúde mental corporativa preventiva",
-    description: "Dados agregados para apoiar RH e lideranças antes do burnout.",
+    title,
+    description: "Dados agregados para apoiar RH e liderancas antes do burnout.",
     images: ["/hero-image.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -51,6 +75,7 @@ export default function RootLayout({
     <html lang="pt-BR" className="scroll-smooth">
       <body className="bg-background text-foreground antialiased">
         {children}
+        <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_ID} />
       </body>
     </html>
   );
