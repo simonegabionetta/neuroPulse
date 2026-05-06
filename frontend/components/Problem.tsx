@@ -17,7 +17,7 @@ const Problem = () => {
   ];
 
   return (
-    <section id="problema" className="section-warm py-20 lg:py-28">
+    <section id="problema" className="bg-white py-20 lg:py-28">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
         <div className="reveal">
           <span className="text-base font-semibold uppercase tracking-widest text-muted">

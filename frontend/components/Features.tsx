@@ -9,7 +9,7 @@ const Features = () => {
   ];
 
   return (
-    <section id="diferenciais" className="section-warm py-20 lg:py-28">
+    <section id="diferenciais" className="bg-white py-20 lg:py-28">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
         <div className="reveal">
           <span className="text-base font-semibold uppercase tracking-widest text-muted">

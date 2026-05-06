@@ -23,7 +23,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section id="como-funciona" className="bg-white py-20 text-dark lg:py-28">
+    <section id="como-funciona" className="section-warm py-20 text-dark lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="reveal max-w-3xl">
           <span className="text-base font-semibold uppercase tracking-widest text-muted">

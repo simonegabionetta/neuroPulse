@@ -10,7 +10,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="precos" className="section-warm py-20 lg:py-28">
+    <section id="precos" className="bg-white py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="reveal-soft grid gap-12 border-y border-dark/15 py-14 text-dark lg:grid-cols-[1fr_0.95fr] lg:items-center">
           <div className="reveal">

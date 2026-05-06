@@ -12,9 +12,9 @@ const config: Config = {
         foreground: "#111111",
         accent: {
           DEFAULT: "#111111",
-          soft: "#dbeafe",
+          soft: "#eeeff5",
         },
-        "surface-warm": "#dbeafe",
+        "surface-warm": "#eeeff5",
         dark: "#111111",
         muted: "#5F5F5A",
         "card-bg": "#FFFFFF",
