@@ -48,9 +48,10 @@ export async function createLead(req: Request, res: Response): Promise<void> {
 
     if (error) {
       if (error.code === "23505") {
-        res.status(409).json({
-          success: false,
-          errors: [{ msg: "Este email ja esta cadastrado." }],
+        res.status(200).json({
+          success: true,
+          data: { id: null },
+          message: "Lead ja cadastrado.",
         });
         return;
       }
